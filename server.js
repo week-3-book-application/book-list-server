@@ -7,7 +7,8 @@ const pg = require('pg');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
-const DATABASE_URL = process.env.DATABASE_URL;
+// const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = 'postgres://localhost:5432/books_app'
 
 const client = new pg.Client(DATABASE_URL);
 client.connect();
@@ -17,10 +18,10 @@ app.use(cors());
 
 app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
 
-// app.get(`${__API_URL__}api/v1/books`) = (request, response) => {
-//   client.query(`SELECT * FROM books;`)
-//     .then(result => response.send(result));
-// }
+app.get(`/api/v1/books`, (request, response) => {
+  client.query(`SELECT * FROM books;`)
+    .then(result => response.send(result.rows));
+});
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
