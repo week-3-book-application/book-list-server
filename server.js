@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
+const bodyParser = require('body-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -13,6 +14,10 @@ const DATABASE_URL = 'postgres://localhost:5432/books_app';
 const client = new pg.Client(DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static('./public'));
 
 app.use(cors({origin : true}));
 
@@ -29,6 +34,22 @@ app.get('/api/v1/books/:id', (request, response) => {
     [request.params.id])
     .then(result => response.send(result.rows))
     .catch(console.error);
+});
+
+app.post('/api/v1/books/new', bodyParser, (request, response) => {
+  console.log(request);
+  client.query(
+    `INSERT INTO books (author, title, isbn, image_url, description) 
+    VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;`,
+    [
+      request.body.author,
+      request.body.title,
+      request.body.isbn,
+      request.body.image_url,
+      request.body.description
+    ]
+  );
+  response.send('insert complete');
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
