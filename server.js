@@ -3,7 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser').urlencoded({extended: true});
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,10 +15,6 @@ const client = new pg.Client(DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('./public'));
-
 app.use(cors({origin : true}));
 
 app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
@@ -29,7 +25,6 @@ app.get(`/api/v1/books`, (request, response) => {
 });
 
 app.get('/api/v1/books/:id', (request, response) => {
-  console.log('hi');
   client.query(`SELECT * FROM books WHERE book_id=$1;`,
     [request.params.id])
     .then(result => response.send(result.rows))
