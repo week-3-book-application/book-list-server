@@ -24,9 +24,10 @@ app.get(`/api/v1/books`, (request, response) => {
 });
 
 app.get('/api/v1/books/:id', (request, response) => {
+  console.log('hi');
   client.query(`SELECT * FROM books WHERE book_id=$1;`,
     [request.params.id])
-    .then(response.send('View complete'))
+    .then(result => response.send(result.rows))
     .catch(console.error);
 });
 
