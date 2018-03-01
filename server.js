@@ -32,7 +32,6 @@ app.get('/api/v1/books/:id', (request, response) => {
 });
 
 app.post('/api/v1/books/new', bodyParser, (request, response) => {
-  console.log(request);
   client.query(
     `INSERT INTO books (author, title, isbn, image_url, description) 
     VALUES ($1, $2, $3, $4, $5) ON CONFLICT DO NOTHING;`,
@@ -43,8 +42,8 @@ app.post('/api/v1/books/new', bodyParser, (request, response) => {
       request.body.image_url,
       request.body.description
     ]
-  );
-  response.send('insert complete');
+  )
+    .then(response.send('insert complete'));
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
