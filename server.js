@@ -15,7 +15,7 @@ const client = new pg.Client(DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
 
-app.use(cors({origin : true}));
+app.use(cors());
 
 // app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
 
