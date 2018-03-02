@@ -32,6 +32,23 @@ app.get('/api/v1/books/:id', (request, response) => {
     .catch(console.error);
 });
 
+app.put('/api/v1/book-:id/update', bodyParser, (request, response) => {
+  client.query(`
+    UPDATE books
+    SET author=$1, title=$2, isbn=$3, image_url=$4, description=$5
+    WHERE book_id=$6;`,
+  [
+    request.body.author,
+    request.body.title,
+    request.body.isbn,
+    request.body.image_url,
+    request.body.description,
+    request.body.book_id
+  ]
+  )
+    .then(response.send('update complete'));
+});
+
 app.post('/api/v1/books/new', bodyParser, (request, response) => {
   client.query(
     `INSERT INTO books (author, title, isbn, image_url, description) 
