@@ -17,7 +17,7 @@ client.on('error', err => console.error(err));
 
 app.use(cors({origin : true}));
 
-app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
+// app.get('/', (req, res) => res.send('Testing 1, 2, 3'));
 
 app.get(`/api/v1/books`, (request, response) => {
   client.query(`SELECT * FROM books;`)
