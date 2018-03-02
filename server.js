@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
 // const DATABASE_URL = process.env.DATABASE_URL;
 const DATABASE_URL = 'postgres://localhost:5432/books_app';
-const TOKEN = process.env.TOKEN;
+const TOKEN = 8888;
 
 const client = new pg.Client(DATABASE_URL);
 client.connect();
