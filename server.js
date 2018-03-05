@@ -8,8 +8,8 @@ const bodyParser = require('body-parser').urlencoded({extended: true});
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL;
-// const DATABASE_URL = process.env.DATABASE_URL;
-const DATABASE_URL = 'postgres://localhost:5432/books_app';
+const DATABASE_URL = process.env.DATABASE_URL;
+// const DATABASE_URL = 'postgres://localhost:5432/books_app';
 const TOKEN = 8888;
 
 const client = new pg.Client(DATABASE_URL);
@@ -23,7 +23,7 @@ app.use(cors());
 app.get(`/api/v1/admin`, (request, response) => {
   console.log(request.query.passcode);
   console.log(TOKEN);
-  response.send(TOKEN === request.query.passcode);
+  response.send(TOKEN === parseInt(request.query.passcode));
 });
 
 app.get(`/api/v1/books`, (request, response) => {
